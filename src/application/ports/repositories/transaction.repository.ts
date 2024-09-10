@@ -1,10 +1,11 @@
 import { Product } from '../../../domain/entities/product.entity';
 
 export interface Transaction {
+  _id: string;
   id: string;
   product: Product;
   quantity: number;
-  status: 'PENDING' | 'COMPLETED' | 'FAILED';
+  status: 'PENDING' | 'APPROVED' | 'FAILED';
   totalAmount: number;
 }
 

@@ -9,7 +9,7 @@ export class TransactionService {
     return this.transactionRepository.create(transactionData);
   }
 
-  async updateTransactionStatus(id: string, status: 'PENDING' | 'COMPLETED' | 'FAILED') {
+  async updateTransactionStatus(id: string, status: 'PENDING' | 'APPROVED' | 'FAILED') {
     return this.transactionRepository.updateStatus(id, status);
   }
 }

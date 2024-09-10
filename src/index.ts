@@ -52,7 +52,7 @@ async function bootstrap() {
       cors: true,
       routePrefix: '/api',
       controllers: [PaymentController, ProductController],
-      middlewares: [LoggingMiddleware, ErrorHandlerMiddleware],
+      middlewares: [ErrorHandlerMiddleware, LoggingMiddleware],
       defaultErrorHandler: false,
     });
 

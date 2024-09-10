@@ -14,7 +14,10 @@ const TransactionModel: Model<Transaction> = model<Transaction>('Transaction', T
 @Service()
 export class MongoDBTransactionRepository implements TransactionRepositoryPort {
   async create(transaction: Omit<Transaction, 'id'>): Promise<Transaction> {
-    const newTransaction = new TransactionModel(transaction);
+    const newTransaction = new TransactionModel({
+      ...transaction,
+      product: transaction.product.id,
+    });
     await newTransaction.save();
     return newTransaction.toObject();
   }

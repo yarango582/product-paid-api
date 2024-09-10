@@ -1,6 +1,7 @@
 import { createLogger, format, transports } from 'winston';
 import { TransformableInfo } from 'logform';
 import { ENV } from '../constants/enviroments.constant';
+import { removeCircularReferences } from '../utils/circular.util';
 
 const { combine, timestamp, prettyPrint, colorize, align, printf } = format;
 
@@ -24,8 +25,9 @@ if (process.env.NODE_ENV !== ENV.PRODUCTION) {
 const printFormat = (info: TransformableInfo) => {
   const { timestamp, level, message, ...args } = info;
   const ts = timestamp.slice(0, 19).replace('T', ' ');
+  const safeArgs = removeCircularReferences(args);
   return `[${level}]: ${ts} ${message} ${
-    Object.keys(args).length ? JSON.stringify(args, null, 2) : ''
+    Object.keys(safeArgs).length ? JSON.stringify(safeArgs, null, 2) : ''
   }`;
 };
 
@@ -40,7 +42,7 @@ const getLogType = (message: any) => {
 export const stream = {
   write: (message: any) => {
     const type = getLogType(message);
-    logger.log({ level: type, message });
+    logger.log({ level: type, message: removeCircularReferences(message) });
   },
 };
 
