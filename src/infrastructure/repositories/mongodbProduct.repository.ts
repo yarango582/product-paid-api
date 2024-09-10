@@ -3,12 +3,18 @@ import { Model, model, Schema } from 'mongoose';
 import { Product } from '../../domain/entities/product.entity';
 import { ProductRepositoryPort } from '../../application/ports/repositories/product.repository';
 
-const ProductSchema = new Schema({
-  name: String,
-  description: String,
-  price: Number,
-  stockQuantity: Number,
-});
+const ProductSchema = new Schema(
+  {
+    name: String,
+    description: String,
+    price: Number,
+    stockQuantity: Number,
+    publicImageURL: { type: String, default: '' },
+  },
+  {
+    timestamps: true,
+  },
+);
 
 const ProductModel: Model<Product> = model<Product>('Product', ProductSchema);
 
@@ -29,5 +35,12 @@ export class MongoDBProductRepository implements ProductRepositoryPort {
 
   async updateStock(id: string, quantity: number): Promise<void> {
     await ProductModel.findByIdAndUpdate(id, { $inc: { stockQuantity: -quantity } });
+  }
+  async create(product: Product): Promise<void> {
+    await ProductModel.create(product);
+  }
+  async findByName(name: string): Promise<Product | null> {
+    const product = await ProductModel.findOne({ name }).lean();
+    return product;
   }
 }
