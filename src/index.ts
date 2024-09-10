@@ -12,35 +12,46 @@ import { connectToMongoDB } from './infrastructure/database/mongodbConnection';
 import { PaymentController } from './infrastructure/web/controllers/payment.controller';
 import { ErrorHandlerMiddleware } from './infrastructure/web/middlewares/errorHandle.middleware';
 import { LoggingMiddleware } from './infrastructure/web/middlewares/loggin.middleware';
-import { WompiPaymentService } from './infrastructure/services/paymentProvider.service';
+// import { ProviderPaymentService } from './infrastructure/services/paymentProvider.service';
 import { MongoDBProductRepository } from './infrastructure/repositories/mongodbProduct.repository';
-import { MongoDBTransactionRepository } from './infrastructure/repositories/mongodbTransaction.repository';
-import { ProcessPaymentUseCase } from './application/use-cases/processPayment.use-case';
+// import { MongoDBTransactionRepository } from './infrastructure/repositories/mongodbTransaction.repository';
+// import { ProcessPaymentUseCase } from './application/use-cases/processPayment.use-case';
 import { setupSwagger } from './config/swagger.config';
+import { ProductController } from './infrastructure/web/controllers/products.controller';
+import { ProductService } from './infrastructure/services/product.service';
+import { MongoDBTransactionRepository } from './infrastructure/repositories/mongodbTransaction.repository';
+import { ProviderPaymentService } from './infrastructure/services/paymentProvider.service';
+import { TransactionService } from './infrastructure/services/transaction.service';
+import { ProcessPaymentUseCase } from './application/use-cases/processPayment.use-case';
+
+useContainer(Container);
 
 async function bootstrap() {
   try {
     await connectToMongoDB();
 
-    useContainer(Container);
-
-    // Register services
-    Container.set('PaymentService', new WompiPaymentService());
-    Container.set('ProductRepository', new MongoDBProductRepository());
-    Container.set('TransactionRepository', new MongoDBTransactionRepository());
+    Container.set('ProductRepositoryPort', new MongoDBProductRepository());
+    Container.set('TransactionRepositoryPort', new MongoDBTransactionRepository());
+    Container.set(ProviderPaymentService, new ProviderPaymentService());
+    Container.set(ProductService, new ProductService(Container.get('ProductRepositoryPort')));
+    Container.set(
+      TransactionService,
+      new TransactionService(Container.get('TransactionRepositoryPort')),
+    );
     Container.set(
       ProcessPaymentUseCase,
       new ProcessPaymentUseCase(
-        Container.get('ProductRepository'),
-        Container.get('PaymentService'),
-        Container.get('TransactionRepository'),
+        Container.get(ProductService),
+        Container.get(TransactionService),
+        Container.get(ProviderPaymentService),
       ),
     );
+    Container.set(PaymentController, new PaymentController(Container.get(ProcessPaymentUseCase)));
 
     const app = createExpressServer({
       cors: true,
       routePrefix: '/api',
-      controllers: [PaymentController],
+      controllers: [PaymentController, ProductController],
       middlewares: [LoggingMiddleware, ErrorHandlerMiddleware],
       defaultErrorHandler: false,
     });

@@ -61,6 +61,43 @@ const swaggerDocument = {
         },
       },
     },
+    '/api/products/{id}': {
+      get: {
+        summary: 'Get product by ID',
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            required: true,
+            schema: {
+              type: 'string',
+            },
+          },
+        ],
+        responses: {
+          '200': {
+            description: 'Successful response',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    id: { type: 'string' },
+                    name: { type: 'string' },
+                    description: { type: 'string' },
+                    price: { type: 'number' },
+                    stockQuantity: { type: 'number' },
+                  },
+                },
+              },
+            },
+          },
+          '404': {
+            description: 'Product not found',
+          },
+        },
+      },
+    },
   },
 };
 
