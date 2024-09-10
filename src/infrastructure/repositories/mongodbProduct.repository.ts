@@ -12,7 +12,7 @@ const ProductSchema = new Schema({
 
 const ProductModel: Model<Product> = model<Product>('Product', ProductSchema);
 
-@Service()
+@Service('ProductRepositoryPort')
 export class MongoDBProductRepository implements ProductRepositoryPort {
   async findById(id: string): Promise<Product | null> {
     const product = await ProductModel.findById(id);

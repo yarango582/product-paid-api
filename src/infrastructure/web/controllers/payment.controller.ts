@@ -1,9 +1,10 @@
 import { JsonController, Post, Body } from 'routing-controllers';
-import { Inject } from 'typedi';
+import { Inject, Service } from 'typedi';
 import { ProcessPaymentUseCase } from '../../../application/use-cases/processPayment.use-case';
 import { ProcessPaymentDto } from '../../../application/dtos/processPayment.dto';
 
 @JsonController('/payments')
+@Service()
 export class PaymentController {
   constructor(
     @Inject(() => ProcessPaymentUseCase) private processPaymentUseCase: ProcessPaymentUseCase,

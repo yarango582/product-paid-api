@@ -4,7 +4,7 @@ import { PaymentServicePort } from '../../application/ports/services/payment.ser
 import logger from '../../config/logger';
 
 @Service()
-export class WompiPaymentService implements PaymentServicePort {
+export class ProviderPaymentService implements PaymentServicePort {
   private readonly apiKey: string;
   private readonly apiUrl: string;
 
