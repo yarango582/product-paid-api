@@ -10,7 +10,7 @@ FROM node:18-alpine
 WORKDIR /usr/src/app
 COPY package*.json ./
 COPY tsconfig.json ./
-RUN npm ci --only=production
+RUN npm install --production
 COPY --from=builder /usr/src/app/dist ./dist
 ENV NODE_ENV=production
 EXPOSE 3000
