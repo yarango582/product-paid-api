@@ -8,7 +8,7 @@ module.exports = {
     '^.+\\.ts$': 'ts-jest',
   },
   coverageDirectory: 'coverage',
-  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts', '!src/main.ts', '!src/config/**/*.ts'],
+  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts'],
   coverageThreshold: {
     global: {
       branches: 80,
@@ -17,4 +17,5 @@ module.exports = {
       statements: 80,
     },
   },
+  coveragePathIgnorePatterns: ['/node_modules/', '/src/__tests__/', '/src/config/', '/src/types/'],
 };

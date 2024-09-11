@@ -12,4 +12,5 @@ export interface Transaction {
 export interface TransactionRepositoryPort {
   create(transaction: Omit<Transaction, 'id'>): Promise<Transaction>;
   updateStatus(id: string, status: Transaction['status']): Promise<void>;
+  find(filter: Partial<Transaction>): Promise<Transaction[]>;
 }

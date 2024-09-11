@@ -11,7 +11,7 @@ const TransactionSchema = new Schema({
 
 const TransactionModel: Model<Transaction> = model<Transaction>('Transaction', TransactionSchema);
 
-@Service()
+@Service('TransactionRepositoryPort')
 export class MongoDBTransactionRepository implements TransactionRepositoryPort {
   async create(transaction: Omit<Transaction, 'id'>): Promise<Transaction> {
     const newTransaction = new TransactionModel({
@@ -19,10 +19,26 @@ export class MongoDBTransactionRepository implements TransactionRepositoryPort {
       product: transaction.product.id,
     });
     await newTransaction.save();
-    return newTransaction.toObject();
+    return this.mapToTransaction(newTransaction);
   }
 
   async updateStatus(id: string, status: Transaction['status']): Promise<void> {
     await TransactionModel.findByIdAndUpdate(id, { status });
+  }
+
+  async find(filter: Partial<Transaction>): Promise<Transaction[]> {
+    const transactions = await TransactionModel.find(filter).populate('product');
+    return transactions.map(this.mapToTransaction);
+  }
+
+  private mapToTransaction(doc: any): Transaction {
+    return {
+      _id: doc._id.toString(),
+      id: doc._id.toString(),
+      product: doc.product,
+      quantity: doc.quantity,
+      status: doc.status,
+      totalAmount: doc.totalAmount,
+    };
   }
 }
