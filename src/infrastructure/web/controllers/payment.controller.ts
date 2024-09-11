@@ -2,7 +2,6 @@ import { JsonController, Post, Body, Res } from 'routing-controllers';
 import { Inject, Service } from 'typedi';
 import { ProcessPaymentUseCase } from '../../../application/use-cases/processPayment.use-case';
 import { ProcessPaymentDto } from '../../../application/dtos/processPayment.dto';
-import { IPaymentServiceResponse } from '../../../application/ports/services/payment.service';
 import { Response } from 'express';
 
 @JsonController('/payments')
@@ -16,16 +15,16 @@ export class PaymentController {
   async processPayment(
     @Body() paymentData: ProcessPaymentDto,
     @Res() response: Response,
-  ): Promise<IPaymentServiceResponse | any> {
+  ): Promise<Response<any, Record<string, any>> | undefined> {
     try {
       const transaction = await this.processPaymentUseCase.execute(
         paymentData.productId,
         paymentData.quantity,
         { token: paymentData.cardToken, email: paymentData.email },
       );
-      return transaction;
+      return response.status(200).json(transaction);
     } catch (error: any) {
-      response.status(500).send({ message: error?.message || 'Internal server error' });
+      response.status(500).json({ message: error?.message || 'Internal server error' });
     }
   }
 }

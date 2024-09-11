@@ -49,7 +49,7 @@ const products = [
   },
 ];
 
-async function seedProducts() {
+export async function seedProducts() {
   try {
     await mongoose.connect(process.env.MONGODB_URI || '');
     logger.info('Connected to MongoDB');
@@ -77,8 +77,6 @@ async function seedProducts() {
     logger.info('Seed completed successfully');
   } catch (error) {
     logger.error('Error seeding products:', error);
-  } finally {
-    await mongoose.connection.close();
   }
 }
 

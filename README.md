@@ -157,6 +157,45 @@ URL de la aplicación desplegada: https://product-paid-api.zeabur.app/api-docs/#
 
 Las contribuciones son bienvenidas. Por favor, abre un issue primero para discutir qué te gustaría cambiar.
 
+
+## Cobertura de pruebas
+
+La cobertura de pruebas actual del proyecto es la siguiente:
+
+![alt text](image.png)
+|
+ Tipo
+|
+ Cobertura
+|
+|
+-----------
+|
+-----------
+|
+|
+ Líneas
+|
+ 81.22%
+|
+|
+ Funciones
+|
+ 80.43%
+|
+|
+ Ramas
+|
+ 74.62%
+|
+|
+ Declaraciones
+|
+ 81.11%
+|
+
+Para ver un informe detallado de la cobertura, ejecuta `npm run test:coverage`.
+
 ## Licencia
 
 [MIT](https://choosealicense.com/licenses/mit/)

@@ -24,11 +24,12 @@ export class MongoDBProductRepository implements ProductRepositoryPort {
     const product = await ProductModel.findById(id);
     return product
       ? new Product(
-          product.id,
+          product._id.toString(),
           product.name,
           product.description,
           product.price,
           product.stockQuantity,
+          product.publicImageURL,
         )
       : null;
   }
@@ -36,11 +37,30 @@ export class MongoDBProductRepository implements ProductRepositoryPort {
   async updateStock(id: string, quantity: number): Promise<void> {
     await ProductModel.findByIdAndUpdate(id, { $inc: { stockQuantity: -quantity } });
   }
-  async create(product: Product): Promise<void> {
-    await ProductModel.create(product);
+
+  async create(productData: Omit<Product, 'id'>): Promise<Product> {
+    const createdProduct = await ProductModel.create(productData);
+    return new Product(
+      createdProduct._id.toString(),
+      createdProduct.name,
+      createdProduct.description,
+      createdProduct.price,
+      createdProduct.stockQuantity,
+      createdProduct.publicImageURL,
+    );
   }
+
   async findByName(name: string): Promise<Product | null> {
     const product = await ProductModel.findOne({ name }).lean();
-    return product;
+    return product
+      ? new Product(
+          product._id.toString(),
+          product.name,
+          product.description,
+          product.price,
+          product.stockQuantity,
+          product.publicImageURL,
+        )
+      : null;
   }
 }

@@ -87,6 +87,7 @@ export class ProviderPaymentService implements PaymentServicePort {
           },
         },
       );
+      const externalTransactionId = response.data.data.id;
 
       if (response.data.data.status === 'PENDING') {
         const id = response.data.data.id;
@@ -95,7 +96,7 @@ export class ProviderPaymentService implements PaymentServicePort {
         if (!result) {
           return {
             status: 'PENDING',
-            externalTransactionId: this.externalTransactionId,
+            externalTransactionId,
             internalTransactionId: transactionId,
             amount: amount,
             currency: currency,
@@ -105,7 +106,7 @@ export class ProviderPaymentService implements PaymentServicePort {
         logger.info(`Payment for transaction ${transactionId} processed successfully`);
         return {
           status: 'APPROVED',
-          externalTransactionId: this.externalTransactionId,
+          externalTransactionId,
           internalTransactionId: transactionId,
           amount: amount,
           currency: currency,
@@ -115,7 +116,7 @@ export class ProviderPaymentService implements PaymentServicePort {
         return {
           status: 'APPROVED',
           internalTransactionId: transactionId,
-          externalTransactionId: this.externalTransactionId,
+          externalTransactionId,
           amount: amount,
           currency: currency,
           reference: reference,
@@ -126,7 +127,7 @@ export class ProviderPaymentService implements PaymentServicePort {
       return {
         status: 'FAILED',
         internalTransactionId: transactionId,
-        externalTransactionId: this.externalTransactionId,
+        externalTransactionId: undefined,
       };
     }
   }

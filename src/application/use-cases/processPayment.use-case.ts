@@ -31,44 +31,28 @@ export class ProcessPaymentUseCase {
     });
 
     try {
-      const isTransaction = await this.paymentService.processPayment(
+      const paymentResult = await this.paymentService.processPayment(
         transaction._id.toString(),
         totalAmount,
         paymentDetails,
       );
-      this.transactionResult = isTransaction;
-      if (isTransaction.status === 'APPROVED') {
+
+      if (paymentResult.status === 'APPROVED') {
         await this.productService.updateProductStock(productId, quantity);
         await this.transactionService.updateTransactionStatus(
           transaction._id.toString(),
           'APPROVED',
         );
-        return {
-          status: 'APPROVED',
-          internalTransactionId: isTransaction.internalTransactionId,
-          externalTransactionId: isTransaction.externalTransactionId,
-          amount: isTransaction.amount,
-          currency: isTransaction.currency,
-          reference: isTransaction.reference,
-        };
+      } else {
+        await this.transactionService.updateTransactionStatus(transaction._id.toString(), 'FAILED');
       }
-      return {
-        status: isTransaction.status,
-        internalTransactionId: isTransaction.internalTransactionId,
-        externalTransactionId: isTransaction.externalTransactionId,
-        amount: isTransaction.amount,
-        currency: isTransaction.currency,
-        reference: isTransaction.reference,
-      };
+
+      return paymentResult;
     } catch (error) {
       await this.transactionService.updateTransactionStatus(transaction._id.toString(), 'FAILED');
       return {
-        status: this.transactionResult.status,
-        internalTransactionId: this.transactionResult.internalTransactionId,
-        externalTransactionId: this.transactionResult.externalTransactionId,
-        amount: this.transactionResult.amount,
-        currency: this.transactionResult.currency,
-        reference: this.transactionResult.reference,
+        status: 'FAILED',
+        internalTransactionId: transaction._id.toString(),
       };
     }
   }
