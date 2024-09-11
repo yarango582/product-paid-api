@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
-import { config } from 'dotenv';
+// import { config } from 'dotenv';
 import { Product } from '../domain/entities/product.entity';
 import { MongoDBProductRepository } from '../infrastructure/repositories/mongodbProduct.repository';
 import logger from '../config/logger';
 
-config();
+// config();
 
 const products = [
   {
