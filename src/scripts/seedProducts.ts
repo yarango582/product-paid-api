@@ -2,12 +2,8 @@ import mongoose from 'mongoose';
 import { Product } from '../domain/entities/product.entity';
 import { MongoDBProductRepository } from '../infrastructure/repositories/mongodbProduct.repository';
 import logger from '../config/logger';
-
-if (process.env.NODE_ENV !== 'production') {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const dotenv = require('dotenv');
-  dotenv.config();
-}
+import dotenv from 'dotenv';
+dotenv.config();
 
 const products = [
   {

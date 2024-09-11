@@ -1,10 +1,6 @@
 import 'reflect-metadata';
-// Cargar dotenv solo si no estamos en producción
-if (process.env.NODE_ENV !== 'production') {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const dotenv = require('dotenv');
-  dotenv.config();
-}
+import dotenv from 'dotenv';
+dotenv.config();
 
 import express from 'express';
 import cors from 'cors';
@@ -16,10 +12,7 @@ import { connectToMongoDB } from './infrastructure/database/mongodbConnection';
 import { PaymentController } from './infrastructure/web/controllers/payment.controller';
 import { ErrorHandlerMiddleware } from './infrastructure/web/middlewares/errorHandle.middleware';
 import { LoggingMiddleware } from './infrastructure/web/middlewares/loggin.middleware';
-// import { ProviderPaymentService } from './infrastructure/services/paymentProvider.service';
 import { MongoDBProductRepository } from './infrastructure/repositories/mongodbProduct.repository';
-// import { MongoDBTransactionRepository } from './infrastructure/repositories/mongodbTransaction.repository';
-// import { ProcessPaymentUseCase } from './application/use-cases/processPayment.use-case';
 import { setupSwagger } from './config/swagger.config';
 import { ProductController } from './infrastructure/web/controllers/products.controller';
 import { ProductService } from './infrastructure/services/product.service';
