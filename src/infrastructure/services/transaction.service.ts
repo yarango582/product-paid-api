@@ -12,4 +12,8 @@ export class TransactionService {
   async updateTransactionStatus(id: string, status: 'PENDING' | 'APPROVED' | 'FAILED') {
     return this.transactionRepository.updateStatus(id, status);
   }
+
+  async find(filter: Partial<any>) {
+    return this.transactionRepository.find(filter);
+  }
 }

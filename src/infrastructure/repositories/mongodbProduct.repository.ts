@@ -63,4 +63,18 @@ export class MongoDBProductRepository implements ProductRepositoryPort {
         )
       : null;
   }
+  async findAll(): Promise<Product[]> {
+    const products = await ProductModel.find();
+    return products.map(
+      (product) =>
+        new Product(
+          product._id.toString(),
+          product.name,
+          product.description,
+          product.price,
+          product.stockQuantity,
+          product.publicImageURL,
+        ),
+    );
+  }
 }

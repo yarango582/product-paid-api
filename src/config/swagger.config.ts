@@ -44,9 +44,11 @@ const swaggerDocument = {
                 schema: {
                   type: 'object',
                   properties: {
-                    transactionId: {
-                      type: 'string',
-                    },
+                    status: { type: 'string' },
+                    internalTransactionId: { type: 'string' },
+                    amount: { type: 'number' },
+                    currency: { type: 'string' },
+                    reference: { type: 'string' },
                   },
                 },
               },
@@ -54,6 +56,40 @@ const swaggerDocument = {
           },
           '400': {
             description: 'Bad request',
+          },
+          '500': {
+            description: 'Internal server error',
+          },
+        },
+      },
+    },
+    '/api/payments/': {
+      get: {
+        summary: 'Get all transactions',
+        responses: {
+          '200': {
+            description: 'Successful response',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      id: { type: 'string' },
+                      productId: { type: 'string' },
+                      quantity: { type: 'number' },
+                      amount: { type: 'number' },
+                      status: { type: 'string' },
+                      paymentDate: { type: 'string' },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          '404': {
+            description: 'No transactions found',
           },
           '500': {
             description: 'Internal server error',
@@ -94,6 +130,34 @@ const swaggerDocument = {
           },
           '404': {
             description: 'Product not found',
+          },
+        },
+      },
+    },
+    '/api/products': {
+      get: {
+        summary: 'Get all products',
+        responses: {
+          '200': {
+            description: 'Successful response',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      id: { type: 'string' },
+                      name: { type: 'string' },
+                      description: { type: 'string' },
+                      price: { type: 'number' },
+                      stockQuantity: { type: 'number' },
+                      publicImageUrl: { type: 'string' },
+                    },
+                  },
+                },
+              },
+            },
           },
         },
       },
