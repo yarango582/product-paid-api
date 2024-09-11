@@ -18,4 +18,5 @@ module.exports = {
     },
   },
   coveragePathIgnorePatterns: ['/node_modules/', '/src/__tests__/', '/src/config/', '/src/types/'],
+  maxWorkers: 1,
 };

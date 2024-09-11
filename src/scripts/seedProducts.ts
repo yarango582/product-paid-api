@@ -77,8 +77,6 @@ export async function seedProducts() {
     logger.info('Seed completed successfully');
   } catch (error) {
     logger.error('Error seeding products:', error);
-  } finally {
-    await mongoose.connection.close();
   }
 }
 

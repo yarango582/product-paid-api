@@ -14,11 +14,10 @@ const TransactionModel: Model<Transaction> = model<Transaction>('Transaction', T
 @Service('TransactionRepositoryPort')
 export class MongoDBTransactionRepository implements TransactionRepositoryPort {
   async create(transaction: Omit<Transaction, 'id'>): Promise<Transaction> {
-    const newTransaction = new TransactionModel({
+    const newTransaction = await TransactionModel.create({
       ...transaction,
       product: transaction.product.id,
     });
-    await newTransaction.save();
     return this.mapToTransaction(newTransaction);
   }
 
@@ -33,8 +32,8 @@ export class MongoDBTransactionRepository implements TransactionRepositoryPort {
 
   private mapToTransaction(doc: any): Transaction {
     return {
-      _id: doc._id.toString(),
-      id: doc._id.toString(),
+      _id: doc._id?.toString() || doc.id,
+      id: doc._id?.toString() || doc.id,
       product: doc.product,
       quantity: doc.quantity,
       status: doc.status,

@@ -162,6 +162,7 @@ Las contribuciones son bienvenidas. Por favor, abre un issue primero para discut
 
 La cobertura de pruebas actual del proyecto es la siguiente:
 
+![alt text](image.png)
 |
  Tipo
 |
@@ -175,22 +176,22 @@ La cobertura de pruebas actual del proyecto es la siguiente:
 |
  Líneas
 |
- 85.7%
+ 81.22%
 |
 |
  Funciones
 |
- 83.3%
+ 80.43%
 |
 |
  Ramas
 |
- 75%
+ 74.62%
 |
 |
  Declaraciones
 |
- 84.8%
+ 81.11%
 |
 
 Para ver un informe detallado de la cobertura, ejecuta `npm run test:coverage`.
