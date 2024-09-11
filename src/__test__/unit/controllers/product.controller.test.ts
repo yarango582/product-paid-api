@@ -43,8 +43,24 @@ describe('ProductController', () => {
 
     it('should handle invalid product ID', async () => {
       const invalidId = 'invalid-id';
-
       await expect(productController.getProduct(invalidId)).rejects.toThrow(BadRequestError);
+    });
+
+    it('should return all products', async () => {
+      const mockProducts = [
+        new Product('1', 'Product 1', 'Description', 100, 10),
+        new Product('2', 'Product 2', 'Description', 200, 20),
+      ];
+      mockProductService.getAllProducts.mockResolvedValue(mockProducts);
+
+      const result = await productController.getProducts();
+
+      expect(mockProductService.getAllProducts).toHaveBeenCalled();
+      expect(result).toEqual(mockProducts);
+    });
+    it('should inject Product Controller', () => {
+      const productController = Container.get(ProductController);
+      expect(productController).toBeInstanceOf(ProductController);
     });
   });
 });

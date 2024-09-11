@@ -19,4 +19,8 @@ export class ProductService {
     }
     return this.productRepository.updateStock(id, quantity);
   }
+
+  async getAllProducts() {
+    return this.productRepository.findAll();
+  }
 }

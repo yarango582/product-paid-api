@@ -43,7 +43,13 @@ async function bootstrap() {
         Container.get(ProviderPaymentService),
       ),
     );
-    Container.set(PaymentController, new PaymentController(Container.get(ProcessPaymentUseCase)));
+    Container.set(
+      PaymentController,
+      new PaymentController(
+        Container.get(ProcessPaymentUseCase),
+        Container.get(TransactionService),
+      ),
+    );
 
     const app = createExpressServer({
       cors: true,
