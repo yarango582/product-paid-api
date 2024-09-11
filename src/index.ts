@@ -1,6 +1,10 @@
 import 'reflect-metadata';
-import dotenv from 'dotenv';
-dotenv.config();
+// Cargar dotenv solo si no estamos en producción
+if (process.env.NODE_ENV !== 'production') {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const dotenv = require('dotenv');
+  dotenv.config();
+}
 
 import express from 'express';
 import cors from 'cors';
