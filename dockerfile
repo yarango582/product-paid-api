@@ -1,20 +1,17 @@
-# Usa una imagen base de Node.js
 FROM node:18-alpine
 
-# Establece el directorio de trabajo
-WORKDIR /app
+RUN npm install -g ts-node
 
-# Copia los archivos de configuración
+WORKDIR /usr/src/app
+
 COPY package*.json ./
 
-# Instala las dependencias incluidas las de desarrollo
-RUN npm install
-
-# Copia el resto del proyecto
 COPY . .
 
-# Expone el puerto que usará la aplicación
-EXPOSE 3000
+RUN npm install
 
-# Comando para ejecutar la aplicación en modo desarrollo
-CMD ["npm", "run", "dev"]
+ENV NODE_ENV=production
+
+EXPOSE 8000
+
+CMD ["npm", "start"]
