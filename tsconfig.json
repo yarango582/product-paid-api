@@ -16,14 +16,13 @@
       "~/*": ["src/*"]
     },
     "rootDirs": ["src/*"],
-    "types": ["reflect-metadata", "node"],
+    "types": ["reflect-metadata", "jest", "node"],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts", "test", "**/__tests__/*"]
+  "include": ["src/**/*", "src/**/*.json"]
 }
