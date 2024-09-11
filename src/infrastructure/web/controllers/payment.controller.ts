@@ -2,7 +2,7 @@ import { JsonController, Post, Body, Res } from 'routing-controllers';
 import { Inject, Service } from 'typedi';
 import { ProcessPaymentUseCase } from '../../../application/use-cases/processPayment.use-case';
 import { ProcessPaymentDto } from '../../../application/dtos/processPayment.dto';
-import { IPaymentServiceResponse } from '~/application/ports/services/payment.service';
+import { IPaymentServiceResponse } from '../../../application/ports/services/payment.service';
 import { Response } from 'express';
 
 @JsonController('/payments')
