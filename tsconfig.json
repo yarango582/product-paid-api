@@ -15,7 +15,7 @@
       "*": ["node_modules/*", "src/types/*", "src/@types/*"],
       "~/*": ["src/*"]
     },
-    "rootDirs": ["src/*"],
+    "rootDirs": ["src"],
     "types": ["reflect-metadata", "node"],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -24,6 +24,6 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "src/**/*.json"],
-  "exclude": ["/usr/src/app/dist"]
+  "include": ["src/**/*"],
+  "exclude": ["dist"]
 }
