@@ -139,7 +139,7 @@ La aplicación está desplegada en ZEABUR utilizando los siguientes servicios:
 - Docker para el servidor de aplicaciones
 - MongoDB para la base de datos
 
-URL de la aplicación desplegada: [PENDIENTE]
+URL de la aplicación desplegada: https://product-paid-api.zeabur.app/api-docs/#/
 
 ## Consideraciones Adicionales
 
