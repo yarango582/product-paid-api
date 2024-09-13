@@ -63,6 +63,66 @@ const swaggerDocument = {
         },
       },
     },
+    '/api/card/validate': {
+      post: {
+        summary: 'Validate a card',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  number: {
+                    type: 'string',
+                  },
+                  cvc: {
+                    type: 'string',
+                  },
+                  expMonth: {
+                    type: 'string',
+                  },
+                  expYear: {
+                    type: 'string',
+                  },
+                  cardHolder: {
+                    type: 'string',
+                  },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          '200': {
+            description: 'Card is valid',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    status: { type: 'string' },
+                    data: {
+                      type: 'object',
+                      properties: {
+                        id: { type: 'string' },
+                        brand: { type: 'string' },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          '400': {
+            description: 'Failed to validate card',
+          },
+          '500': {
+            description: 'Internal server error',
+          },
+        },
+      },
+    },
     '/api/payments/': {
       get: {
         summary: 'Get all transactions',
