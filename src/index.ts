@@ -20,6 +20,7 @@ import { MongoDBTransactionRepository } from './infrastructure/repositories/mong
 import { ProviderPaymentService } from './infrastructure/services/paymentProvider.service';
 import { TransactionService } from './infrastructure/services/transaction.service';
 import { ProcessPaymentUseCase } from './application/use-cases/processPayment.use-case';
+import { CardController } from './infrastructure/web/controllers/card.controller';
 
 useContainer(Container);
 
@@ -54,7 +55,7 @@ async function bootstrap() {
     const app = createExpressServer({
       cors: true,
       routePrefix: '/api',
-      controllers: [PaymentController, ProductController],
+      controllers: [PaymentController, ProductController, CardController],
       middlewares: [ErrorHandlerMiddleware, LoggingMiddleware],
       defaultErrorHandler: false,
     });
