@@ -3,6 +3,7 @@ import { ProductService } from '../../../infrastructure/services/product.service
 import { TransactionService } from '../../../infrastructure/services/transaction.service';
 import { ProviderPaymentService } from '../../../infrastructure/services/paymentProvider.service';
 import { Product } from '../../../domain/entities/product.entity';
+import { TAXES } from '../../../constants/taxes.constant';
 
 describe('ProcessPaymentUseCase', () => {
   let processPaymentUseCase: ProcessPaymentUseCase;
@@ -31,6 +32,47 @@ describe('ProcessPaymentUseCase', () => {
       paymentServiceMock,
     );
   });
+
+  it('deberia calcular los impuestos correctamente', async () => {
+    const mockProduct = new Product('3', 'Producto de Prueba', 'Descripción', 100, 10);
+    productServiceMock.getProductById.mockResolvedValue(mockProduct);
+
+    transactionServiceMock.createTransaction.mockResolvedValue({
+      _id: '123',
+      status: 'PENDING',
+    } as any);
+
+    paymentServiceMock.processPayment.mockResolvedValue({
+      status: 'APPROVED',
+      internalTransactionId: '123',
+      externalTransactionId: 'ext123',
+    });
+
+    const quantity = 1;
+    const paymentDetails = { token: 'token1223', email: 'test@gmail.com' };
+
+    const result = await processPaymentUseCase.execute('3', quantity, paymentDetails);
+
+    const totalAmountWithoutTaxes = mockProduct.price * quantity;
+    const expectedTax = totalAmountWithoutTaxes * TAXES.COL;
+    const expectedTotalAmount = totalAmountWithoutTaxes + expectedTax;
+
+    expect(transactionServiceMock.createTransaction).toHaveBeenCalledWith({
+      product: mockProduct,
+      quantity,
+      status: 'PENDING',
+      totalAmount: expectedTotalAmount,
+    });
+
+    expect(result.status).toBe('APPROVED');
+    expect(result.internalTransactionId).toBe('123');
+  });
+
+  // it('deberia lanzar un error al intentar cambiar los impuestos', async () => {
+  //   expect(() => {
+  //     TAXES.COL = 0.2;
+  //   }).toThrow('Cannot assign to read only property');
+  // });
 
   it('debería procesar el pago exitosamente', async () => {
     const mockProduct = new Product('1', 'Producto de Prueba', 'Descripción', 100, 10);

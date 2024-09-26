@@ -3,6 +3,7 @@ import { ProductService } from '../../infrastructure/services/product.service';
 import { TransactionService } from '../../infrastructure/services/transaction.service';
 import { ProviderPaymentService } from '../../infrastructure/services/paymentProvider.service';
 import { IPaymentServiceResponse } from '../ports/services/payment.service';
+import { TAXES } from '../../constants/taxes.constant';
 
 @Service()
 export class ProcessPaymentUseCase {
@@ -22,7 +23,11 @@ export class ProcessPaymentUseCase {
     if (!product) throw new Error('Product not found');
     if (product.stockQuantity < quantity) throw new Error('Insufficient stock');
 
-    const totalAmount = product.price * quantity;
+    const totalAmountWithOutTaxes = product.price * quantity;
+    const tax = totalAmountWithOutTaxes * TAXES.COL;
+
+    const totalAmount = totalAmountWithOutTaxes + tax;
+
     const transaction = await this.transactionService.createTransaction({
       product,
       quantity,
